@@ -11,16 +11,20 @@ This program supports the handling of signals in containers if you want to start
 - It relays all possible signals to all controlled processes.
 - If a controlled process dies, the signals stored in the configuration (mostly 15) are sent to all remaining processes.
 - Then forkel waits the time, which is stored in the configuration as grace-period, sends a kill -9 to all processes and terminates.
+- loglevels: TRACE, DEBUG, INFO, WARN, ERROR, NONE
 
 ### configuration item
-<?
     {
-      "executable":"/home/dieter/docker/signals/docker-signals/showsiga",
+      "executable":"/docker-signals/showsiga",
       "name":"showsig 01",
       "parameter":["a", "b", "c"],
-      "signal":9
+      "signal":15
     }
-?>
+
+- executable: path to the executable
+- name: name of the process in the process list
+- parameter: comandline parameters
+- signal: siganl send to the process, when a controlled process has died
 
 ### build
 For containers the build should be static.
@@ -36,3 +40,7 @@ You need to install the library "libjsoncpp".
 - but ...
 - They are too big, the configuration is too complex, they want to run as root, they don't do what they are supposed to do, ...
 - Forkel is small, static and minimal.
+
+### showsig
+Showsig ist a little helper which is intercepting all possible signals and print them out when it receives one of them.
+- https://github.com/dmaj/docker-signals.git

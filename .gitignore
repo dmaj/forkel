@@ -8,6 +8,7 @@ forkel.depend
 forkel.cbp
 cfg1.json
 cfg2.json
+cfg-test.json
 showsig
 docker
 *.swp

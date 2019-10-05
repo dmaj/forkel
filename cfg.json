@@ -4,19 +4,19 @@
   "apps":
   [
     {
-      "executable":"/home/dieter/docker/signals/docker-signals/showsiga",
+      "executable":"/docker-signals/showsiga",
       "name":"showsig 01",
       "parameter":["a", "b", "c"],
       "signal":9
     },
     {
-      "executable":"/home/dieter/docker/signals/docker-signals/showsig",
+      "executable":"/docker-signals/showsig",
       "name":"showsig 02",
       "parameter":["a", "b", "c"],
       "signal":9
      },
      {
-      "executable":"/home/dieter/docker/signals/docker-signals/showsig",
+      "executable":"/docker-signals/showsig",
       "name":"showsig 03",
       "parameter":[],
       "signal":15
