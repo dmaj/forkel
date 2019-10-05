@@ -1,22 +1,14 @@
-//#include <iostream>
-//#include <vector>
-//#include <stdio.h>
-//#include <cctype>
 #include <cstdarg>
-//#include <signal.h>
 #include <string.h>
-//#include <thread>
-//#include <future>
 #include <algorithm>
 #include <sys/wait.h>
 #include <unistd.h>
 #include <jsoncpp/json/json.h>
-//#include <fstream>
-//#include <chrono>
 #include "logging.hpp"
 
 using namespace std;
 using namespace logging;
+
 
 
 struct TAppConfig
@@ -31,9 +23,10 @@ struct TAppConfig
 vector<TAppConfig> config;
 int grace_period;
 string loglevel;
+pid_t ppid;
 
 void forkel (int);
-void cleanup ();
+void cleanup (bool killall = false);
 void displayCfg(const Json::Value &cfg_root);
 void read_config (string copt);
 void sig_handler(int signo);
@@ -43,6 +36,7 @@ void testExec(int);
 
 int main(int argc, char **argv, char **env)
 {
+    ppid = getpid();
     logging::setLogLevel ("DEBUG");
     int c;
     string copt = "";
@@ -66,19 +60,22 @@ int main(int argc, char **argv, char **env)
 
     read_config (copt);
     logging::setLogLevel (loglevel);
+
     logging::TRACE("Start ..."); //this_thread::sleep_for(chrono::milliseconds(10));
 
     int sig;
     for (sig = 1; sig < NSIG; sig++)
     {
         if (signal(sig, sig_handler) == SIG_ERR) {
-            logging::DEBUG(str_pf ("Can't catch %i -> %s", sig, strsignal(sig)));
+            logging::TRACE(str_pf ("Can't catch %i -> %s", sig, strsignal(sig)));
             //this_thread::sleep_for(std::chrono::milliseconds(10));
         }
     }
 
-
     forkel(config.size());
+
+    // Not for childs ... !
+    if (ppid != getpid()) return (0);
 
     wait (0);
 
@@ -95,18 +92,22 @@ int main(int argc, char **argv, char **env)
         usleep (100);
     }
 
+    cleanup (true);
 
     return 0;
 }
 
-void cleanup()
+void cleanup(bool killall)
 {
   for (vector<TAppConfig>::const_iterator i = config.begin(); i != config.end(); ++i)
     {
         pid_t pid = (*i).pid;
-        int signal = (*i).signal;
+        int signal = (killall) ? 9 : (*i).signal;
         int ret = kill(pid, signal);
-        logging::INFO(str_pf("Send signal %i to PID %i with result %i\n", signal, pid, ret));
+        if (ret != -1)
+            logging::INFO(str_pf("Send signal %i to PID %i with result %i\n", signal, pid, ret));
+        else
+            logging::DEBUG(str_pf("Send signal %i to PID %i with result %i\n", signal, pid, ret));
     }
 
 }
@@ -172,15 +173,16 @@ void forkel(int nprocesses)
             vector<const char *> chars(cfg.parameter.size());
             transform(cfg.parameter.begin(), cfg.parameter.end(), chars.begin(), mem_fun_ref(&string::c_str));
 
-            char* result[cfg.parameter.size()+2];
-            result[0] = &(cfg.name[0]);
-            for (uint cntr = 0; cntr < chars.size(); cntr++) {
-                result[cntr + 1] = (char*) chars[cntr];
-            };
-            result[cfg.parameter.size() + 1] = 0;
+            char* param_list[cfg.parameter.size()+2];
+            param_list[0] = &(cfg.name[0]);
+            for (uint cntr = 0; cntr < chars.size(); cntr++)
+                param_list[cntr + 1] = (char*) chars[cntr];
+            param_list[cfg.parameter.size() + 1] = 0;
+            logging::DEBUG(str_pf("Executable: %s   Name: %s   ParentPID: %i   PID: %i\n", executable, param_list[0], ppid, cpid));
 
-            logging::INFO(str_pf("Executable: %s   Name: %s   ParentPID: %i   PID: %i\n", executable, result[0], ppid, cpid));
-            execv(executable, result);
+            int ret = execv(executable, param_list);
+            if (ret == -1) logging::ERROR(str_pf("Start of %s failed\n", param_list[0]));
+            //exit(-1);
         }
         else if(pid > 0)
         {
@@ -220,9 +222,8 @@ void testExec (int num)
 
     char* result[cfg.parameter.size()+2];
     result[0] = name;
-    for (uint cntr = 0; cntr < chars.size(); cntr++) {
+    for (uint cntr = 0; cntr < chars.size(); cntr++)
         result[cntr + 1] = (char*) chars[cntr];
-    };
     result[cfg.parameter.size() + 1] = 0;
 
     execv(executable, result);

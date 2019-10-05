@@ -7,4 +7,7 @@ forkel.layout
 forkel.depend
 forkel.cbp
 cfg1.json
-
+cfg2.json
+showsig
+docker
+*.swp

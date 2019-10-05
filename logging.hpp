@@ -244,6 +244,8 @@ namespace logging {
     if (logLevel == "NONE") LOG_LEVEL_CUTOFF = log_level::NONE;
   };
 
+  inline logging::log_level getLogLevel() {return (LOG_LEVEL_CUTOFF);};
+
   //these standout when reading code
   inline void TRACE(const std::string& message) {
     get_logger().log(message, log_level::TRACE);
