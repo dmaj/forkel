@@ -1,0 +1,26 @@
+{
+  "grace-period":10,
+  "loglevel":"INFO",
+  "apps":
+  [
+    {
+      "executable":"/home/dieter/docker/signals/docker-signals/showsig",
+      "name":"showsig 01",
+      "parameter":["a", "b", "c"],
+      "signal":9
+    },
+    {
+      "executable":"/home/dieter/docker/signals/docker-signals/showsig",
+      "name":"showsig 02",
+      "parameter":["a", "b", "c"],
+      "signal":9
+     },
+     {
+      "executable":"/home/dieter/docker/signals/docker-signals/showsig",
+      "name":"showsig 03",
+      "parameter":[],
+      "signal":9
+     }
+
+  ]
+}
