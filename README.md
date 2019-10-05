@@ -2,6 +2,13 @@
 
 Please note: This program has been written in a very short time and not yet as I would like it to be. But at least it runs stable.
 This program supports the handling of signals in containers if you want to start more than one process. Yes, you shouldn't do that, but sometimes you do things you shouldn't do. 
+- Forkel starts and monitors all programs entrusted to him.
+- If one of the processes ends, for whatever reason, Forkel sends the configured signals to the remaining processes. These get the chance to terminate themselves correctly. 
+- After the grace-period all processes are definitely terminated and the container terminates.
+- In normal operation all received signals are passed on to all controlled processes.
+- When entering "docker stop <container>" forkel ensures that each process receives the signal "15 -> SIGTerminated".
+
+Translated with www.DeepL.com/Translator
 
 ### operation
 - All programs controlled by forkel must run in foreground
