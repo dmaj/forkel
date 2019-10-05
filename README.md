@@ -6,9 +6,7 @@ This program supports the handling of signals in containers if you want to start
 - If one of the processes ends, for whatever reason, Forkel sends the configured signals to the remaining processes. These get the chance to terminate themselves correctly. 
 - After the grace-period all processes are definitely terminated and the container terminates.
 - In normal operation all received signals are passed on to all controlled processes.
-- When entering "docker stop <container>" forkel ensures that each process receives the signal "15 -> SIGTerminated".
-
-Translated with www.DeepL.com/Translator
+- When entering "docker stop \<container\>" forkel ensures that each process receives the signal "15 -> SIGTerminated".
 
 ### operation
 - All programs controlled by forkel must run in foreground
