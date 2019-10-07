@@ -39,7 +39,7 @@ This program supports the handling of signals in containers if you want to start
 - name: name of the process in the process list
 - parameter: comandline parameters
 - signal-blacklist: Signals not send to the process (always two characters! e.g. 02)
-- signal: siganl send to the process, when a controlled process has died
+- signal: signal send to the process, when a controlled process has died
 
 ### build
 For containers the build should be static.
