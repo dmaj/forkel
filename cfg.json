@@ -1,24 +1,28 @@
 {
   "grace-period":10,
+  "handle-siginterrupt": 1,
   "loglevel":"DEBUG",
   "apps":
   [
     {
-      "executable":"/docker-signals/showsiga",
+      "executable":"/docker-signals/showsig",
       "name":"showsig 01",
       "parameter":["a", "b", "c"],
+      "signal-blacklist":"02 17",
       "signal":9
     },
     {
       "executable":"/docker-signals/showsig",
       "name":"showsig 02",
       "parameter":["a", "b", "c"],
+      "signal-blacklist":"02 17",
       "signal":9
      },
      {
-      "executable":"/docker-signals/showsig",
+      "executable":"docker-signals/showsig",
       "name":"showsig 03",
       "parameter":[],
+      "signal-blacklist":"02 17",
       "signal":15
      }
 

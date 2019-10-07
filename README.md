@@ -18,17 +18,27 @@ This program supports the handling of signals in containers if you want to start
 - Then forkel waits the time, which is stored in the configuration as grace-period, sends a kill -9 to all processes and terminates.
 - loglevels: TRACE, DEBUG, INFO, WARN, ERROR, NONE
 
-### configuration item
+### configuration (global)
+    "grace-period":10,
+    "handle-siginterrupt": 1,
+    "loglevel":"DEBUG",
+- grace-peroid: Waiting time until kill -9 is sent
+- handle-siginterrupt: 1 -> CTRL-C on the console triggers a shutdown. 0 -> no handling
+- loglevel: One of the loglevels
+
+### configuration item (per program)
     {
-      "executable":"/docker-signals/showsiga",
+      "executable":"/docker-signals/showsig",
       "name":"showsig 01",
       "parameter":["a", "b", "c"],
-      "signal":15
+      "signal-blacklist":"02 17",
+      "signal":9
     }
 
 - executable: path to the executable
 - name: name of the process in the process list
 - parameter: comandline parameters
+- signal-blacklist: Signals not send to the process (always two characters! e.g. 02)
 - signal: siganl send to the process, when a controlled process has died
 
 ### build
