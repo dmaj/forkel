@@ -48,7 +48,7 @@ You need to install the library "libjsoncpp".
 - for ubuntu: sudo apt install libjsoncpp-dev
 
 - g++ -Wall -fexceptions -g  -c main.cpp -o main.o
-- g++  -o forkel main.o  -static  -ljsoncpp
+- g++  -o forkel main.o  -static  -ljsoncpp -pthread
 
 ### why forkel?
 - There are a lot of programs that manage processes in containers. There are s6, supervisor, runit, ...
