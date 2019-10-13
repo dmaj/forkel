@@ -17,6 +17,7 @@ This program supports the handling of signals in containers if you want to start
 - If a controlled process dies, the signals stored in the configuration (mostly 15) are sent to all remaining processes.
 - Then forkel waits the time, which is stored in the configuration as grace-period, sends a kill -9 to all processes and terminates.
 - loglevels: TRACE, DEBUG, INFO, WARN, ERROR, NONE
+- Works as a simple zombie reaper when running on PID 1
 
 ### configuration (global)
     "grace-period":10,
@@ -47,8 +48,8 @@ You need to install the library "libjsoncpp".
 
 - for ubuntu: sudo apt install libjsoncpp-dev
 
-- g++ -Wall -fexceptions -g  -c main.cpp -o main.o
-- g++  -o forkel main.o  -static  -ljsoncpp -lpthread
+- g++ -Wall -fexceptions -g  -c forkel.cpp -o forkel.o
+- g++  -o forkel forkel.o  -static  -ljsoncpp -lpthread
 
 ### why forkel?
 - There are a lot of programs that manage processes in containers. There are s6, supervisor, runit, ...
