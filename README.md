@@ -51,12 +51,6 @@ You need to install the library "libjsoncpp".
 - g++ -Wall -fexceptions -g  -c forkel.cpp -o forkel.o
 - g++  -o forkel forkel.o  -static  -ljsoncpp -lpthread
 
-### why forkel?
-- There are a lot of programs that manage processes in containers. There are s6, supervisor, runit, ...
-- but ...
-- They are too big, the configuration is too complex, they want to run as root, they don't do what they are supposed to do, ...
-- Forkel is small, static and minimal.
-
 ### showsig
 Showsig ist a little helper which is intercepting all possible signals and print them out when it receives one of them.
 - https://github.com/dmaj/docker-signals.git
